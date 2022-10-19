@@ -1,12 +1,10 @@
 import boxen from 'boxen';
 import ciInfo from 'ci-info';
 
-type Tests = ReadonlyArray<Readonly<[() => void, 'only'?]>>;
-
 const testCases = ({
     tests,
 }: Readonly<{
-    tests: Tests;
+    tests: ReadonlyArray<Readonly<[() => void, 'only'?]>>;
 }>) => {
     const selectedTests = tests.filter(([_, only]) => only);
 
@@ -33,7 +31,7 @@ const testCases = ({
             boxen(selectedTests.map(([{ name }]) => name).join(`\n`), {
                 padding: 1,
             }),
-            'The "only" is not allowed in CI/CD environment',
+            'The "only" flag is not allowed in CI/CD environment',
             '',
         ].join('\n')
     );
