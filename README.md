@@ -51,6 +51,16 @@ And I will comment out irrelevant test when I wanna test new changes
 
 In the end I forgot to uncomment the commented tests in CI/CD environment
 
+## Output
+
+When there are test flagged with `only`, the following will happen in CI/CD environment
+
+| Setup                                      | Output                                              |
+| ------------------------------------------ | --------------------------------------------------- |
+| ![Code](./docs/test-flagged-with-only.png) | ![Output](./docs/test-flagged-with-only-output.png) |
+
+**Images from the log of Github Actions of `denoify` repository**
+
 ## How to use
 
 1. Install this package
