@@ -1,7 +1,18 @@
 import testCases from '../src';
-import testContainsOnly from './contains-only';
-import testWithoutOnly from './without-only';
+import {
+    testContainsNone,
+    testContainsOnlyFlagToExecute,
+    testContainsSkipFlagToExecute,
+    testContainsOnlyFlagToThrowError,
+    testContainsSkipFlagToThrowError,
+} from './contains';
 
 testCases({
-    tests: [[testWithoutOnly], [testContainsOnly]],
+    tests: [
+        [testContainsNone],
+        [testContainsOnlyFlagToExecute],
+        [testContainsSkipFlagToExecute],
+        [testContainsOnlyFlagToThrowError],
+        [testContainsSkipFlagToThrowError],
+    ],
 });

@@ -1,9 +1,9 @@
 import testCases from '../../src';
 import { it, describe, expect } from 'vitest';
 
-const testWithoutOnly = () => {
-    describe('without passing "only" to tests', () => {
-        it('should not throw error before running any tests', () => {
+const testContainsNone = () => {
+    describe('without passing "only" or "skip" to tests', () => {
+        it('should run test and not throw error before running any tests', () => {
             const numberOfTests = 10;
             const testsRan = testCases({
                 tests: Array.from({ length: numberOfTests }, () => [() => {}]),
@@ -15,4 +15,4 @@ const testWithoutOnly = () => {
     });
 };
 
-export default testWithoutOnly;
+export { testContainsNone };

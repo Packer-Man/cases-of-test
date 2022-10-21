@@ -1,7 +1,7 @@
 {
     "name": "cases-of-test",
-    "description": "Run test locally with only flag but with the condition that it can detect there are tests flagged with only and it will fail on CI/CD environment",
-    "version": "0.0.1",
+    "description": "Run test locally with only/skip flag but with the condition that it can detect there are tests flagged with only and it will fail on CI/CD environment",
+    "version": "0.0.2",
     "license": "MIT",
     "main": "build/cjs/index.js",
     "module": "build/mjs/index.js",
