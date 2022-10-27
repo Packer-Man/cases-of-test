@@ -29,16 +29,15 @@
         "ci cd"
     ],
     "scripts": {
-        "setup": "yarn install --frozen-lockfile",
+        "installation": "pnpm i --frozen-lockfile",
         "lint": "eslint src/ test/ -f='stylish' --color",
         "format": "prettier --ignore-path .gitignore --write src/ test/",
         "format-check": "prettier --ignore-path .gitignore --check src/ test/",
         "build-mjs": "tsc -p tsconfig.mjs.json",
         "build-cjs": "tsc -p tsconfig.cjs.json",
         "build-dts": "tsc -p tsconfig.json",
-        "build": "rm -rf build && yarn build-dts && yarn build-cjs && yarn build-mjs && node script/package.js",
-        "test-local": "vitest --config config/vite/local.ts",
-        "test-ci": "vitest --config config/vite/ci-cd.ts"
+        "build": "rm -rf build && pnpm build-dts && pnpm build-cjs && pnpm build-mjs && node script/package.js",
+        "test": "vitest"
     },
     "bugs": "https://github.com/Packer-Man/cases-of-test/issues",
     "repository": {
