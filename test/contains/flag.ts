@@ -1,5 +1,6 @@
 import testCases from '../../src';
 import { it, describe, expect } from 'vitest';
+import { isCI } from 'ci-info';
 
 const testContainsFlagToThrowError = () =>
     describe.each(['only', 'skip'] as const)(
@@ -25,6 +26,7 @@ const testContainsFlagToExecute = () =>
         `tests with flag configured`,
         (type) => {
             it(`should run tests when it detects there is "${type}" configured to at least one test`, () => {
+                (process.env.TESTS_CASES_IS_CI as any) = isCI;
                 const numberOfTests = 10;
                 const testsRan = testCases({
                     tests: Array.from({ length: numberOfTests }, (_, index) => [
