@@ -96,6 +96,4 @@ const testCases = ({
     return runTests(tests);
 };
 
-export { Type };
-
 export default testCases;

@@ -1,4 +1,4 @@
-## 0.0.2 (21 Oct 2022)
+## 0.1.0 (27 Oct 2022)
 
 -   (Feat) Added `skip` flag as well
 

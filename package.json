@@ -1,7 +1,7 @@
 {
     "name": "cases-of-test",
     "description": "Run test locally with only/skip flag but with the condition that it can detect there are tests flagged with only and it will fail on CI/CD environment",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "license": "MIT",
     "main": "build/cjs/index.js",
     "module": "build/mjs/index.js",
@@ -40,10 +40,10 @@
         "test-local": "vitest --config config/vite/local.ts",
         "test-ci": "vitest --config config/vite/ci-cd.ts"
     },
-    "bugs": "https://github.com/Packer-Man/test-controller/issues",
+    "bugs": "https://github.com/Packer-Man/cases-of-test/issues",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Packer-Man/test-controller"
+        "url": "https://github.com/Packer-Man/cases-of-test"
     },
     "devDependencies": {
         "@types/node": "^18.11.0",

@@ -3,7 +3,7 @@ import { it, describe, expect } from 'vitest';
 
 const testContainsNone = () => {
     describe('without passing "only" or "skip" to tests', () => {
-        it('should run test and not throw error before running any tests', () => {
+        it('should run test and would not throw error before running any tests', () => {
             const numberOfTests = 10;
             const testsRan = testCases({
                 tests: Array.from({ length: numberOfTests }, () => [() => {}]),
