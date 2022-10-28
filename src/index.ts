@@ -1,28 +1,21 @@
 import boxen from 'boxen';
 import ciInfo from 'ci-info';
 
-const testCases = ({
-    tests,
+type Ci = typeof ciInfo;
+type Type = 'skip' | 'only';
+type Tests = ReadonlyArray<Readonly<[() => void, ('only' | 'skip')?]>>;
+
+const runTests = (tests: Tests) => tests.map(([test]) => test());
+
+const mustRunAllTests = ({
+    type,
+    selectedTests,
 }: Readonly<{
-    tests: ReadonlyArray<Readonly<[() => void, 'only'?]>>;
-}>) => {
-    const selectedTests = tests.filter(([_, only]) => only);
+    type: Type;
 
-    const ci = {
-        ...ciInfo,
-        isCI:
-            JSON.parse(process.env.TESTS_CASES_IS_CI ?? 'false') === true
-                ? true
-                : ciInfo.isCI,
-    } as typeof ciInfo;
-
-    if (!(ci.isCI && selectedTests.length)) {
-        return (!selectedTests.length ? tests : selectedTests).map(([test]) =>
-            test()
-        );
-    }
-
-    throw new Error(
+    selectedTests: Tests;
+}>) =>
+    new Error(
         [
             '',
             `The following test${
@@ -31,10 +24,90 @@ const testCases = ({
             boxen(selectedTests.map(([{ name }]) => name).join(`\n`), {
                 padding: 1,
             }),
-            'The "only" flag is not allowed in CI/CD environment',
+            `The "${type}" flag is not allowed in CI/CD environment`,
             '',
         ].join('\n')
     );
+
+const handleSkipTests = ({
+    ci,
+    tests,
+}: Readonly<{
+    ci: Ci;
+    tests: Tests;
+}>) => {
+    const selectedTests = tests.filter(([, only]) => only !== 'skip');
+    if (!(ci.isCI && selectedTests.length)) {
+        return runTests(selectedTests);
+    }
+    throw mustRunAllTests({
+        type: 'skip',
+        selectedTests,
+    });
+};
+
+const handleOnlyTests = ({
+    ci,
+    tests,
+}: Readonly<{
+    ci: Ci;
+    tests: Tests;
+}>) => {
+    const selectedTests = tests.filter(([, only]) => only === 'only');
+    if (!(ci.isCI && selectedTests.length)) {
+        return runTests(selectedTests);
+    }
+    throw mustRunAllTests({
+        type: 'only',
+        selectedTests,
+    });
+};
+
+const parseCasesOfTestEnvValue = () => {
+    switch (process.env.CASES_OF_TEST_IS_CI) {
+        case undefined: {
+            return undefined;
+        }
+        case 'true':
+        case 'false': {
+            return JSON.parse(process.env.CASES_OF_TEST_IS_CI);
+        }
+        default: {
+            throw new Error(
+                'CASES_OF_TEST cannot be any value other than boolean and undefined'
+            );
+        }
+    }
+};
+
+const testCases = ({
+    tests,
+}: Readonly<{
+    tests: ReadonlyArray<Readonly<[() => void, Type?]>>;
+}>) => {
+    const hasOnly = Boolean(tests.find(([, only]) => only === 'only'));
+    const hasSkip = Boolean(tests.find(([, skip]) => skip === 'skip'));
+    if (hasOnly && hasSkip) {
+        throw new Error('Cannot have "only" and "skip" flag together');
+    }
+
+    const props = {
+        tests,
+        ci: {
+            ...ciInfo,
+            isCI: parseCasesOfTestEnvValue() ?? ciInfo.isCI,
+        } as Ci,
+    };
+
+    if (hasOnly) {
+        return handleOnlyTests(props);
+    }
+
+    if (hasSkip) {
+        return handleSkipTests(props);
+    }
+
+    return runTests(tests);
 };
 
 export default testCases;
