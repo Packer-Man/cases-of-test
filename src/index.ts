@@ -63,6 +63,23 @@ const handleOnlyTests = ({
     });
 };
 
+const parseCasesOfTestEnvValue = () => {
+    switch (process.env.CASES_OF_TEST_IS_CI) {
+        case undefined: {
+            return undefined;
+        }
+        case 'true':
+        case 'false': {
+            return JSON.parse(process.env.CASES_OF_TEST_IS_CI);
+        }
+        default: {
+            throw new Error(
+                'CASES_OF_TEST cannot be any value other than boolean and undefined'
+            );
+        }
+    }
+};
+
 const testCases = ({
     tests,
 }: Readonly<{
@@ -78,10 +95,7 @@ const testCases = ({
         tests,
         ci: {
             ...ciInfo,
-            isCI:
-                JSON.parse(process.env.TESTS_CASES_IS_CI ?? 'false') === true
-                    ? true
-                    : ciInfo.isCI,
+            isCI: parseCasesOfTestEnvValue() ?? ciInfo.isCI,
         } as Ci,
     };
 
