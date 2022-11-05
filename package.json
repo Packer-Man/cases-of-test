@@ -46,6 +46,7 @@
         "url": "https://github.com/Packer-Man/cases-of-test"
     },
     "devDependencies": {
+        "@poolofdeath20/eslint-config": "^0.0.1",
         "@types/node": "^18.11.0",
         "@typescript-eslint/eslint-plugin": "^5.40.0",
         "@typescript-eslint/parser": "^5.40.0",
